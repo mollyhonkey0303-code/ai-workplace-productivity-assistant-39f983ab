@@ -10,33 +10,136 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedWorkspaceRouteRouteImport } from './routes/_authenticated/workspace/route'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AuthenticatedWorkspaceEmailRouteImport } from './routes/_authenticated/workspace/email'
+import { Route as AuthenticatedWorkspaceMeetingsRouteImport } from './routes/_authenticated/workspace/meetings'
+import { Route as AuthenticatedWorkspaceResearchRouteImport } from './routes/_authenticated/workspace/research'
+import { Route as AuthenticatedWorkspaceTasksRouteImport } from './routes/_authenticated/workspace/tasks'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedWorkspaceRouteRoute =
+  AuthenticatedWorkspaceRouteRouteImport.update({
+    id: '/workspace',
+    path: '/workspace',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedWorkspaceEmailRoute =
+  AuthenticatedWorkspaceEmailRouteImport.update({
+    id: '/email',
+    path: '/email',
+    getParentRoute: () => AuthenticatedWorkspaceRouteRoute,
+  } as any)
+const AuthenticatedWorkspaceMeetingsRoute =
+  AuthenticatedWorkspaceMeetingsRouteImport.update({
+    id: '/meetings',
+    path: '/meetings',
+    getParentRoute: () => AuthenticatedWorkspaceRouteRoute,
+  } as any)
+const AuthenticatedWorkspaceResearchRoute =
+  AuthenticatedWorkspaceResearchRouteImport.update({
+    id: '/research',
+    path: '/research',
+    getParentRoute: () => AuthenticatedWorkspaceRouteRoute,
+  } as any)
+const AuthenticatedWorkspaceTasksRoute =
+  AuthenticatedWorkspaceTasksRouteImport.update({
+    id: '/tasks',
+    path: '/tasks',
+    getParentRoute: () => AuthenticatedWorkspaceRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/workspace': typeof AuthenticatedWorkspaceRouteRouteWithChildren
+  '/api/chat': typeof ApiChatRoute
+  '/workspace/email': typeof AuthenticatedWorkspaceEmailRoute
+  '/workspace/meetings': typeof AuthenticatedWorkspaceMeetingsRoute
+  '/workspace/research': typeof AuthenticatedWorkspaceResearchRoute
+  '/workspace/tasks': typeof AuthenticatedWorkspaceTasksRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/workspace': typeof AuthenticatedWorkspaceRouteRouteWithChildren
+  '/api/chat': typeof ApiChatRoute
+  '/workspace/email': typeof AuthenticatedWorkspaceEmailRoute
+  '/workspace/meetings': typeof AuthenticatedWorkspaceMeetingsRoute
+  '/workspace/research': typeof AuthenticatedWorkspaceResearchRoute
+  '/workspace/tasks': typeof AuthenticatedWorkspaceTasksRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/workspace': typeof AuthenticatedWorkspaceRouteRouteWithChildren
+  '/api/chat': typeof ApiChatRoute
+  '/_authenticated/workspace/email': typeof AuthenticatedWorkspaceEmailRoute
+  '/_authenticated/workspace/meetings': typeof AuthenticatedWorkspaceMeetingsRoute
+  '/_authenticated/workspace/research': typeof AuthenticatedWorkspaceResearchRoute
+  '/_authenticated/workspace/tasks': typeof AuthenticatedWorkspaceTasksRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/workspace'
+    | '/api/chat'
+    | '/workspace/email'
+    | '/workspace/meetings'
+    | '/workspace/research'
+    | '/workspace/tasks'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/workspace'
+    | '/api/chat'
+    | '/workspace/email'
+    | '/workspace/meetings'
+    | '/workspace/research'
+    | '/workspace/tasks'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/workspace'
+    | '/api/chat'
+    | '/_authenticated/workspace/email'
+    | '/_authenticated/workspace/meetings'
+    | '/_authenticated/workspace/research'
+    | '/_authenticated/workspace/tasks'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +151,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/workspace': {
+      id: '/_authenticated/workspace'
+      path: '/workspace'
+      fullPath: '/workspace'
+      preLoaderRoute: typeof AuthenticatedWorkspaceRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/workspace/email': {
+      id: '/_authenticated/workspace/email'
+      path: '/email'
+      fullPath: '/workspace/email'
+      preLoaderRoute: typeof AuthenticatedWorkspaceEmailRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRouteRoute
+    }
+    '/_authenticated/workspace/meetings': {
+      id: '/_authenticated/workspace/meetings'
+      path: '/meetings'
+      fullPath: '/workspace/meetings'
+      preLoaderRoute: typeof AuthenticatedWorkspaceMeetingsRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRouteRoute
+    }
+    '/_authenticated/workspace/research': {
+      id: '/_authenticated/workspace/research'
+      path: '/research'
+      fullPath: '/workspace/research'
+      preLoaderRoute: typeof AuthenticatedWorkspaceResearchRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRouteRoute
+    }
+    '/_authenticated/workspace/tasks': {
+      id: '/_authenticated/workspace/tasks'
+      path: '/tasks'
+      fullPath: '/workspace/tasks'
+      preLoaderRoute: typeof AuthenticatedWorkspaceTasksRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRouteRoute
+    }
   }
 }
 
+interface AuthenticatedWorkspaceRouteRouteChildren {
+  AuthenticatedWorkspaceEmailRoute: typeof AuthenticatedWorkspaceEmailRoute
+  AuthenticatedWorkspaceMeetingsRoute: typeof AuthenticatedWorkspaceMeetingsRoute
+  AuthenticatedWorkspaceResearchRoute: typeof AuthenticatedWorkspaceResearchRoute
+  AuthenticatedWorkspaceTasksRoute: typeof AuthenticatedWorkspaceTasksRoute
+}
+
+const AuthenticatedWorkspaceRouteRouteChildren: AuthenticatedWorkspaceRouteRouteChildren =
+  {
+    AuthenticatedWorkspaceEmailRoute: AuthenticatedWorkspaceEmailRoute,
+    AuthenticatedWorkspaceMeetingsRoute: AuthenticatedWorkspaceMeetingsRoute,
+    AuthenticatedWorkspaceResearchRoute: AuthenticatedWorkspaceResearchRoute,
+    AuthenticatedWorkspaceTasksRoute: AuthenticatedWorkspaceTasksRoute,
+  }
+
+const AuthenticatedWorkspaceRouteRouteWithChildren =
+  AuthenticatedWorkspaceRouteRoute._addFileChildren(
+    AuthenticatedWorkspaceRouteRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedWorkspaceRouteRoute: typeof AuthenticatedWorkspaceRouteRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedWorkspaceRouteRoute:
+    AuthenticatedWorkspaceRouteRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
