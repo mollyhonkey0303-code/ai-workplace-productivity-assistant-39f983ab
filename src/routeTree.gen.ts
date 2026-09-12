@@ -14,7 +14,10 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedWorkspaceRouteRouteImport } from './routes/_authenticated/workspace/route'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AuthenticatedWorkspaceIndexRouteImport } from './routes/_authenticated/workspace/index'
+import { Route as AuthenticatedWorkspaceAssistantRouteImport } from './routes/_authenticated/workspace/assistant'
 import { Route as AuthenticatedWorkspaceEmailRouteImport } from './routes/_authenticated/workspace/email'
+import { Route as AuthenticatedWorkspaceHistoryRouteImport } from './routes/_authenticated/workspace/history'
 import { Route as AuthenticatedWorkspaceMeetingsRouteImport } from './routes/_authenticated/workspace/meetings'
 import { Route as AuthenticatedWorkspaceResearchRouteImport } from './routes/_authenticated/workspace/research'
 import { Route as AuthenticatedWorkspaceTasksRouteImport } from './routes/_authenticated/workspace/tasks'
@@ -44,10 +47,28 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedWorkspaceIndexRoute =
+  AuthenticatedWorkspaceIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedWorkspaceRouteRoute,
+  } as any)
+const AuthenticatedWorkspaceAssistantRoute =
+  AuthenticatedWorkspaceAssistantRouteImport.update({
+    id: '/assistant',
+    path: '/assistant',
+    getParentRoute: () => AuthenticatedWorkspaceRouteRoute,
+  } as any)
 const AuthenticatedWorkspaceEmailRoute =
   AuthenticatedWorkspaceEmailRouteImport.update({
     id: '/email',
     path: '/email',
+    getParentRoute: () => AuthenticatedWorkspaceRouteRoute,
+  } as any)
+const AuthenticatedWorkspaceHistoryRoute =
+  AuthenticatedWorkspaceHistoryRouteImport.update({
+    id: '/history',
+    path: '/history',
     getParentRoute: () => AuthenticatedWorkspaceRouteRoute,
   } as any)
 const AuthenticatedWorkspaceMeetingsRoute =
@@ -74,20 +95,25 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/workspace': typeof AuthenticatedWorkspaceRouteRouteWithChildren
   '/api/chat': typeof ApiChatRoute
+  '/workspace/assistant': typeof AuthenticatedWorkspaceAssistantRoute
   '/workspace/email': typeof AuthenticatedWorkspaceEmailRoute
+  '/workspace/history': typeof AuthenticatedWorkspaceHistoryRoute
   '/workspace/meetings': typeof AuthenticatedWorkspaceMeetingsRoute
   '/workspace/research': typeof AuthenticatedWorkspaceResearchRoute
   '/workspace/tasks': typeof AuthenticatedWorkspaceTasksRoute
+  '/workspace/': typeof AuthenticatedWorkspaceIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/workspace': typeof AuthenticatedWorkspaceRouteRouteWithChildren
   '/api/chat': typeof ApiChatRoute
+  '/workspace/assistant': typeof AuthenticatedWorkspaceAssistantRoute
   '/workspace/email': typeof AuthenticatedWorkspaceEmailRoute
+  '/workspace/history': typeof AuthenticatedWorkspaceHistoryRoute
   '/workspace/meetings': typeof AuthenticatedWorkspaceMeetingsRoute
   '/workspace/research': typeof AuthenticatedWorkspaceResearchRoute
   '/workspace/tasks': typeof AuthenticatedWorkspaceTasksRoute
+  '/workspace': typeof AuthenticatedWorkspaceIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -96,10 +122,13 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/workspace': typeof AuthenticatedWorkspaceRouteRouteWithChildren
   '/api/chat': typeof ApiChatRoute
+  '/_authenticated/workspace/assistant': typeof AuthenticatedWorkspaceAssistantRoute
   '/_authenticated/workspace/email': typeof AuthenticatedWorkspaceEmailRoute
+  '/_authenticated/workspace/history': typeof AuthenticatedWorkspaceHistoryRoute
   '/_authenticated/workspace/meetings': typeof AuthenticatedWorkspaceMeetingsRoute
   '/_authenticated/workspace/research': typeof AuthenticatedWorkspaceResearchRoute
   '/_authenticated/workspace/tasks': typeof AuthenticatedWorkspaceTasksRoute
+  '/_authenticated/workspace/': typeof AuthenticatedWorkspaceIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -108,20 +137,25 @@ export interface FileRouteTypes {
     | '/auth'
     | '/workspace'
     | '/api/chat'
+    | '/workspace/assistant'
     | '/workspace/email'
+    | '/workspace/history'
     | '/workspace/meetings'
     | '/workspace/research'
     | '/workspace/tasks'
+    | '/workspace/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
-    | '/workspace'
     | '/api/chat'
+    | '/workspace/assistant'
     | '/workspace/email'
+    | '/workspace/history'
     | '/workspace/meetings'
     | '/workspace/research'
     | '/workspace/tasks'
+    | '/workspace'
   id:
     | '__root__'
     | '/'
@@ -129,10 +163,13 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/workspace'
     | '/api/chat'
+    | '/_authenticated/workspace/assistant'
     | '/_authenticated/workspace/email'
+    | '/_authenticated/workspace/history'
     | '/_authenticated/workspace/meetings'
     | '/_authenticated/workspace/research'
     | '/_authenticated/workspace/tasks'
+    | '/_authenticated/workspace/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -179,11 +216,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/workspace/': {
+      id: '/_authenticated/workspace/'
+      path: '/'
+      fullPath: '/workspace/'
+      preLoaderRoute: typeof AuthenticatedWorkspaceIndexRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRouteRoute
+    }
+    '/_authenticated/workspace/assistant': {
+      id: '/_authenticated/workspace/assistant'
+      path: '/assistant'
+      fullPath: '/workspace/assistant'
+      preLoaderRoute: typeof AuthenticatedWorkspaceAssistantRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRouteRoute
+    }
     '/_authenticated/workspace/email': {
       id: '/_authenticated/workspace/email'
       path: '/email'
       fullPath: '/workspace/email'
       preLoaderRoute: typeof AuthenticatedWorkspaceEmailRouteImport
+      parentRoute: typeof AuthenticatedWorkspaceRouteRoute
+    }
+    '/_authenticated/workspace/history': {
+      id: '/_authenticated/workspace/history'
+      path: '/history'
+      fullPath: '/workspace/history'
+      preLoaderRoute: typeof AuthenticatedWorkspaceHistoryRouteImport
       parentRoute: typeof AuthenticatedWorkspaceRouteRoute
     }
     '/_authenticated/workspace/meetings': {
@@ -211,18 +269,24 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedWorkspaceRouteRouteChildren {
+  AuthenticatedWorkspaceAssistantRoute: typeof AuthenticatedWorkspaceAssistantRoute
   AuthenticatedWorkspaceEmailRoute: typeof AuthenticatedWorkspaceEmailRoute
+  AuthenticatedWorkspaceHistoryRoute: typeof AuthenticatedWorkspaceHistoryRoute
   AuthenticatedWorkspaceMeetingsRoute: typeof AuthenticatedWorkspaceMeetingsRoute
   AuthenticatedWorkspaceResearchRoute: typeof AuthenticatedWorkspaceResearchRoute
   AuthenticatedWorkspaceTasksRoute: typeof AuthenticatedWorkspaceTasksRoute
+  AuthenticatedWorkspaceIndexRoute: typeof AuthenticatedWorkspaceIndexRoute
 }
 
 const AuthenticatedWorkspaceRouteRouteChildren: AuthenticatedWorkspaceRouteRouteChildren =
   {
+    AuthenticatedWorkspaceAssistantRoute: AuthenticatedWorkspaceAssistantRoute,
     AuthenticatedWorkspaceEmailRoute: AuthenticatedWorkspaceEmailRoute,
+    AuthenticatedWorkspaceHistoryRoute: AuthenticatedWorkspaceHistoryRoute,
     AuthenticatedWorkspaceMeetingsRoute: AuthenticatedWorkspaceMeetingsRoute,
     AuthenticatedWorkspaceResearchRoute: AuthenticatedWorkspaceResearchRoute,
     AuthenticatedWorkspaceTasksRoute: AuthenticatedWorkspaceTasksRoute,
+    AuthenticatedWorkspaceIndexRoute: AuthenticatedWorkspaceIndexRoute,
   }
 
 const AuthenticatedWorkspaceRouteRouteWithChildren =
